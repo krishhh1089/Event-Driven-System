@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "common-application"
+version = "1.0.0"
+description = "Common application layer for the food-ordering microservices"
+requires-python = ">=3.12"
+dependencies = ["common-domain"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

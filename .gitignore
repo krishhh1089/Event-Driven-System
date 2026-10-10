@@ -1,0 +1,53 @@
+# Git ignore patterns for food-ordering-microservices
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Alembic
+versions/
+
+# Environment
+.env
+*.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Docker
+.docker/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.junit.xml
+
+# mypy / ruff
+.mypy_cache/
+.ruff_cache/
+
+# Kubernetes secrets (never commit real secrets)
+**/secrets/*.yaml
+!**/secrets/template.yaml

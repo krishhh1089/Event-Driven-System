@@ -1,0 +1,45 @@
+{
+  "type": "record",
+  "name": "PaymentRequestAvroModel",
+  "namespace": "com.food.ordering.system.kafka.order.avro.model",
+  "doc": "Payment request event published by the Order Service to the payment-request topic.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Event UUID"
+    },
+    {
+      "name": "saga_id",
+      "type": "string",
+      "doc": "Saga correlation UUID"
+    },
+    {
+      "name": "customer_id",
+      "type": "string"
+    },
+    {
+      "name": "order_id",
+      "type": "string"
+    },
+    {
+      "name": "price",
+      "type": "string",
+      "doc": "Decimal amount encoded as string to preserve precision"
+    },
+    {
+      "name": "created_at",
+      "type": "string",
+      "doc": "ISO-8601 UTC timestamp"
+    },
+    {
+      "name": "payment_order_status",
+      "type": {
+        "type": "enum",
+        "name": "PaymentOrderStatus",
+        "symbols": ["PENDING", "CANCELLED"]
+      },
+      "doc": "PENDING = initiate charge; CANCELLED = initiate refund"
+    }
+  ]
+}

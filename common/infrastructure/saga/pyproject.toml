@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "saga-infrastructure"
+version = "1.0.0"
+description = "Shared Saga orchestration building blocks"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]

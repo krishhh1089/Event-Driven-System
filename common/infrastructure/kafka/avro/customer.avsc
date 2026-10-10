@@ -1,0 +1,30 @@
+{
+  "type": "record",
+  "name": "CustomerCreatedEvent",
+  "namespace": "com.food.ordering.system.customer.service.messaging",
+  "doc": "Event published when a new customer is created. Consumed by the Order Service to replicate a local customer read model.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Customer UUID as a string"
+    },
+    {
+      "name": "username",
+      "type": "string"
+    },
+    {
+      "name": "first_name",
+      "type": "string"
+    },
+    {
+      "name": "last_name",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "string",
+      "doc": "ISO-8601 UTC timestamp"
+    }
+  ]
+}

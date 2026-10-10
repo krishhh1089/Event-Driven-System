@@ -1,0 +1,60 @@
+{
+  "type": "record",
+  "name": "RestaurantApprovalRequestAvroModel",
+  "namespace": "com.food.ordering.system.kafka.order.avro.model",
+  "doc": "Restaurant approval request published by Order Service to restaurant-approval-request topic.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Event UUID"
+    },
+    {
+      "name": "saga_id",
+      "type": "string",
+      "doc": "Saga correlation UUID"
+    },
+    {
+      "name": "restaurant_id",
+      "type": "string"
+    },
+    {
+      "name": "order_id",
+      "type": "string"
+    },
+    {
+      "name": "restaurant_order_status",
+      "type": {
+        "type": "enum",
+        "name": "RestaurantOrderStatus",
+        "symbols": ["PAID"]
+      },
+      "doc": "Only PAID orders can request restaurant approval"
+    },
+    {
+      "name": "products",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Product",
+          "fields": [
+            {"name": "id", "type": "string", "doc": "Product UUID"},
+            {"name": "quantity", "type": "int"},
+            {"name": "price", "type": "string", "doc": "Unit price as decimal string"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "price",
+      "type": "string",
+      "doc": "Total order price as decimal string"
+    },
+    {
+      "name": "created_at",
+      "type": "string",
+      "doc": "ISO-8601 UTC timestamp"
+    }
+  ]
+}

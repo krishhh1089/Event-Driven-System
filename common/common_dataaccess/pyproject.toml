@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "common-dataaccess"
+version = "1.0.0"
+description = "Common data-access layer for the food-ordering microservices"
+requires-python = ">=3.12"
+dependencies = [
+    "common-domain",
+    "sqlalchemy>=2.0.0",
+    "psycopg[asyncio]>=3.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

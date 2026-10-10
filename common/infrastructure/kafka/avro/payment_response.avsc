@@ -1,0 +1,58 @@
+{
+  "type": "record",
+  "name": "PaymentResponseAvroModel",
+  "namespace": "com.food.ordering.system.kafka.order.avro.model",
+  "doc": "Payment response event published by the Payment Service to the payment-response topic.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Event UUID"
+    },
+    {
+      "name": "saga_id",
+      "type": "string",
+      "doc": "Saga correlation UUID"
+    },
+    {
+      "name": "payment_id",
+      "type": "string",
+      "doc": "UUID of the payment record"
+    },
+    {
+      "name": "customer_id",
+      "type": "string"
+    },
+    {
+      "name": "order_id",
+      "type": "string"
+    },
+    {
+      "name": "price",
+      "type": "string",
+      "doc": "Decimal amount encoded as string"
+    },
+    {
+      "name": "created_at",
+      "type": "string",
+      "doc": "ISO-8601 UTC timestamp"
+    },
+    {
+      "name": "payment_status",
+      "type": {
+        "type": "enum",
+        "name": "PaymentStatus",
+        "symbols": ["COMPLETED", "CANCELLED", "FAILED"]
+      }
+    },
+    {
+      "name": "failure_messages",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": [],
+      "doc": "Human-readable failure reasons; empty on success"
+    }
+  ]
+}

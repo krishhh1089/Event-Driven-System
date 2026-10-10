@@ -1,0 +1,48 @@
+{
+  "type": "record",
+  "name": "RestaurantApprovalResponseAvroModel",
+  "namespace": "com.food.ordering.system.kafka.order.avro.model",
+  "doc": "Restaurant approval response published by Restaurant Service to restaurant-approval-response topic.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Event UUID"
+    },
+    {
+      "name": "saga_id",
+      "type": "string",
+      "doc": "Saga correlation UUID"
+    },
+    {
+      "name": "restaurant_id",
+      "type": "string"
+    },
+    {
+      "name": "order_id",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "string",
+      "doc": "ISO-8601 UTC timestamp"
+    },
+    {
+      "name": "order_approval_status",
+      "type": {
+        "type": "enum",
+        "name": "OrderApprovalStatus",
+        "symbols": ["APPROVED", "REJECTED"]
+      }
+    },
+    {
+      "name": "failure_messages",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": [],
+      "doc": "Human-readable rejection reasons; empty on approval"
+    }
+  ]
+}

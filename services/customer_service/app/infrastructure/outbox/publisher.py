@@ -12,16 +12,14 @@ from datetime import datetime, timezone
 from sqlalchemy import select, update, and_
 
 from kafka_infrastructure import AvroHelper, KafkaProducerWrapper
-from ..infrastructure.database.models import CustomerOutboxModel, OutboxStatusEnum
+from ..database.models import CustomerOutboxModel, OutboxStatusEnum
 
 logger = logging.getLogger(__name__)
 
 
 def _load_customer_schema() -> str:
-    import pathlib
-    root = pathlib.Path(__file__).parents[6]
-    with open(root / "common/infrastructure/kafka/avro/customer.avsc") as f:
-        return f.read()
+    from kafka_infrastructure import load_avro_schema
+    return load_avro_schema("customer.avsc")
 
 
 class CustomerOutboxPublisher:

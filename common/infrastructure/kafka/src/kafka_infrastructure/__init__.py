@@ -132,3 +132,43 @@ class AvroHelper:
         parsed = fastavro.parse_schema(json.loads(schema_meta.schema_str))
         buf = BytesIO(data[5:])
         return fastavro.schemaless_reader(buf, parsed)
+
+
+# ---------------------------------------------------------------------------
+# Schema file loader helper
+# ---------------------------------------------------------------------------
+
+def load_avro_schema(schema_filename: str) -> str:
+    """
+    Robust Avro schema file loader.
+    Searches:
+    1. AVRO_SCHEMAS_DIR environment variable
+    2. Relative to kafka_infrastructure package
+    3. Crawling up from current working directory / repo root
+    4. Container path /app/common/infrastructure/kafka/avro
+    """
+    import os
+    import pathlib
+
+    env_dir = os.environ.get("AVRO_SCHEMAS_DIR")
+    if env_dir:
+        candidate = pathlib.Path(env_dir) / schema_filename
+        if candidate.is_file():
+            return candidate.read_text(encoding="utf-8")
+
+    pkg_candidate = pathlib.Path(__file__).resolve().parents[2] / "avro" / schema_filename
+    if pkg_candidate.is_file():
+        return pkg_candidate.read_text(encoding="utf-8")
+
+    cwd = pathlib.Path.cwd().resolve()
+    for parent in [cwd] + list(cwd.parents):
+        candidate = parent / "common" / "infrastructure" / "kafka" / "avro" / schema_filename
+        if candidate.is_file():
+            return candidate.read_text(encoding="utf-8")
+
+    docker_candidate = pathlib.Path("/app/common/infrastructure/kafka/avro") / schema_filename
+    if docker_candidate.is_file():
+        return docker_candidate.read_text(encoding="utf-8")
+
+    raise FileNotFoundError(f"Avro schema file '{schema_filename}' could not be located.")
+

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "payment-service"
+version = "1.0.0"
+description = "Food Ordering System — Payment Service"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.29.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.0",
+    "sqlalchemy[asyncio]>=2.0.30",
+    "alembic>=1.13.0",
+    "psycopg[asyncio]>=3.1.19",
+    "confluent-kafka>=2.4.0",
+    "fastavro>=1.9.0",
+    # Local shared libraries (editable installs)
+    "common-domain",
+    "common-application",
+    "common-dataaccess",
+    "saga-infrastructure",
+    "outbox-infrastructure",
+    "kafka-infrastructure",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.27",
+    "pytest-mock>=3.14",
+    "testcontainers>=4.7",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

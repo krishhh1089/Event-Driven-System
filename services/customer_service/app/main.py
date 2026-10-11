@@ -113,14 +113,53 @@ async def create_customer(
     return CreateCustomerResponse(customerId=body.customerId)
 
 
+@app.get("/customers/{customer_id}", status_code=status.HTTP_200_OK)
+async def get_customer(
+    customer_id: UUID,
+    session: AsyncSession = Depends(get_session),
+):
+    from sqlalchemy import select
+    from .infrastructure.database.models import CustomerModel
+    stmt = select(CustomerModel).where(CustomerModel.id == customer_id)
+    result = await session.execute(stmt)
+    customer = result.scalar_one_or_none()
+    if customer is None:
+        return JSONResponse(status_code=404, content={"code": "CUSTOMER_NOT_FOUND", "message": f"Customer {customer_id} not found"})
+    return {
+        "customerId": str(customer.id),
+        "username": customer.username,
+        "firstName": customer.first_name,
+        "lastName": customer.last_name,
+        "createdAt": customer.created_at.isoformat(),
+    }
+
+
 @app.get("/health")
 async def health():
     return {"status": "UP", "service": "customer-service"}
 
 
+@app.get("/health/readiness")
+async def readiness():
+    checks = {}
+    try:
+        async with SessionFactory() as session:
+            await session.execute(__import__("sqlalchemy").text("SELECT 1"))
+        checks["database"] = "UP"
+    except Exception as exc:
+        checks["database"] = f"DOWN: {exc}"
+
+    all_up = all(v == "UP" for v in checks.values())
+    return JSONResponse(
+        status_code=200 if all_up else 503,
+        content={"status": "UP" if all_up else "DOWN", "checks": checks},
+    )
+
+
 @app.exception_handler(DomainException)
 async def domain_exc(request: Request, exc: DomainException):
     return JSONResponse(status_code=400, content={"code": "DOMAIN_ERROR", "message": exc.message})
+
 
 
 if __name__ == "__main__":

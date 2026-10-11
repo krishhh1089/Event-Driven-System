@@ -38,15 +38,9 @@ from ...infrastructure.database.models import (
 
 logger = logging.getLogger(__name__)
 
-AVRO_SCHEMAS_DIR = "common/infrastructure/kafka/avro"
-
-
 def _load_schema(name: str) -> str:
-    import os, pathlib
-    root = pathlib.Path(__file__).parents[7]  # repo root
-    schema_path = root / AVRO_SCHEMAS_DIR / name
-    with open(schema_path) as f:
-        return f.read()
+    from kafka_infrastructure import load_avro_schema
+    return load_avro_schema(name)
 
 
 class PaymentOutboxPublisher:
